@@ -1,15 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io.connect('http://localhost:9013');
-
 export default function SocketClient(){
-    const [receiveMessage, setReceiveMessage] = useState(""); // State to store received message
     const [receiveMessageStack, setReceiveMessageStack] = useState([]); // State to store received message
-    const textArea = useRef();
+    const backendBport = 9013
+    const localBackendUrl = `http://localhost:${backendBport}`;
+    const socket = io.connect(localBackendUrl);
 
     const setReceiveMessageStacker = (data) => {
-        // setReceiveMessage(data); // Set the received message data to state
         setReceiveMessageStack((prev) => [...prev, data]); // Append new message to the stack
     }
 
@@ -25,10 +23,9 @@ export default function SocketClient(){
         
     }
 
-    const callBroadcast = () => {
-        // Function to emit a broadcast event to the server
-        // socket.emit("broadcast", "SKIPI BROADCAST xyshio from the client!");
-        fetch("http://localhost:9013/api/v1/broadcast", {
+    const callBroadcast = async () => {
+        const url4Backend = `${localBackendUrl}/api/v1/broadcast`;
+        await fetch(url4Backend, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -66,9 +63,9 @@ export default function SocketClient(){
         id="txt-area"
         defaultValue={drawBroadcasters(receiveMessageStack)} 
         readOnly={true}
-        style={{width:'500px', height:'100px', borderRadius:'8px', margin:10, border: '1px silver solid', boxShadow: '2px 2px 10px rgba(97, 97, 97, 0.4)' }}></textarea>
+        style={{width:'500px', height:'250px', borderRadius:'8px', margin:10, border: '1px silver solid', boxShadow: '2px 2px 10px rgba(97, 97, 97, 0.4)' }}></textarea>
         <br/>
-        <buton onClick={()=>callBroadcast()} className="skipiButton">Call Broadcasting</buton>
+        <button onClick={()=>callBroadcast()} className="skipiButton">Call Broadcasting</button>
       </div>
     );
 };
