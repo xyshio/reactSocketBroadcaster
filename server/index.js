@@ -39,7 +39,7 @@ app.use('/api/v1/emit', socketIOMiddleware, (req, res) => {
 app.use('/api/v1/broadcast', socketIOMiddleware, (req, res) => {
     const radd = randmizer(10);
     req.io.emit("broadcast", `Emitting broadcast from backend! ${radd}`);
-    res.send(`Sending broadcast from backend! ${radd}`);
+    //res.send(`Sending broadcast from backend! ${radd}`);
     // res.status(200).json({ message: "Hello from the server!" });    
 });
 

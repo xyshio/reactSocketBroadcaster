@@ -23,16 +23,6 @@ export default function SocketClient(){
         
     }
 
-    const callBroadcast = async () => {
-        const url4Backend = `${localBackendUrl}/api/v1/broadcast`;
-        await fetch(url4Backend, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-    }
-
     const scrollToBottom = (id) => {
         window.setInterval(function() {
             var elem = document.getElementById(id);
@@ -41,19 +31,20 @@ export default function SocketClient(){
     };
 
     useEffect(() => {
+      
       // Listen for incoming messages from the server
       socket.on("broadcast", (data) => {
         console.log(data); // Log the received message data to the console
         setReceiveMessageStacker(data); // Set the received message data to state
         scrollToBottom('txt-area');
       }); // Bind the scrollToBottom function to the current context
-  
+      
+     
       // Cleanup the effect by removing the event listener when the component unmounts
       return () => {
         socket.off("broadcast");
       };
-
-
+      
 
     }, []); // Empty dependency array ensures this runs only once when the component mounts
   
@@ -65,7 +56,7 @@ export default function SocketClient(){
         readOnly={true}
         style={{width:'500px', height:'250px', borderRadius:'8px', margin:10, border: '1px silver solid', boxShadow: '2px 2px 10px rgba(97, 97, 97, 0.4)' }}></textarea>
         <br/>
-        <button onClick={()=>callBroadcast()} className="skipiButton">Call Broadcasting</button>
+        {/* <button onClick={()=>callBroadcast()} className="skipiButton">Call Broadcasting</button> */}
       </div>
     );
 };
